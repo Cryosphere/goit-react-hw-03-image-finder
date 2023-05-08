@@ -97,9 +97,9 @@ export class App extends Component {
     const { images, page, largeImage, isModalOpen, isLoading } = this.state;
     return (
       <div className={style.wrapper}>
-        {isModalOpen ? (
+        {/* {isModalOpen ? (
           <Modal clickImage={largeImage} handleClose={this.closeModal} />
-        ) : null}
+        ) : null} */}
         <Searchbar handleSubmit={this.handleSubmit} />
         {isLoading && (page <= 1) ? <Loader /> : null}
         <ImageGallery>
