@@ -6,6 +6,7 @@ import { ImageGalleryItem } from './ImageGalleryItem/ImageGalleryItem.jsx';
 import { Loader } from './Loader/Loader.jsx';
 import { Modal } from './Modal/Modal.jsx';
 import { Searchbar } from './Searchbar/Searchbar.jsx';
+import { Notify } from 'notiflix';
 import style from './App.module.css';
 
 
@@ -27,7 +28,7 @@ export class App extends Component {
     e.preventDefault();
     const form = e.currentTarget;
     const input = form.elements.input.value;
-    // console.log(input);
+     console.log(input);
     this.setState({ images: [], search: input, page: 1 });
     form.reset();
   };
@@ -45,7 +46,7 @@ export class App extends Component {
           };
         });
       } catch (error) {
-        console.log('Error occurred');
+        Notify.failure(`Error occurred ${error}`)
       } finally {
           this.setState({ isLoading: false });
       };
@@ -81,7 +82,7 @@ export class App extends Component {
     try {
       this.setState(({ page }) => ({ page: page + 1 }));
     } catch (error) {
-      console.log('Error occurred')
+      Notify.failure(`Error occurred ${error}`)
     } finally {
       this.setState({ isLoading: false });
     };
