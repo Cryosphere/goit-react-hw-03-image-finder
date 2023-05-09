@@ -17,39 +17,53 @@ const INITIAL_STATE = {
   isLoading: false,
   isModalOpen: false,
   error: null,
+  inputVal:null,
 };
 
 export class App extends Component {
   state = { ...INITIAL_STATE };
 
   // submitting form func
-  handleSubmit = e => {
-    e.preventDefault();
-    const form = e.currentTarget;
-    const input = form.elements.input.value;
-    this.setState({ images: [], search: input, page: 1 });
-    form.reset();
-  };
+handleSubmit = e => {
+  e.preventDefault();
+  const form = e.currentTarget;
+  const input = form.elements.input.value;
+
+  if (input.trim() === this.state.inputVal?.trim()) {
+    this.setState({ page: 1 });
+  } else {
+    this.setState({ images: [], search: input, page: 1, inputVal: input });
+  }
+
+  // form.reset();
+};
+
 
   // updating component + fetch images from API
   async componentDidUpdate(prevProps, prevState) {
-    if (prevState.page !== this.state.page || prevState.search !== this.state.search) {
+    if (
+      prevState.page !== this.state.page ||
+      prevState.search !== this.state.search
+    ) {
       this.setState({ isLoading: true });
       try {
         const fetch = await fetchImg(this.state.search, this.state.page, 12);
-        const updatedImages = fetch.hits.map(({ id, webformatURL, largeImageURL }) => ({
-          id,
-          webformatURL,
-          largeImageURL,
+        const updatedImages = fetch.hits.map(
+          ({ id, webformatURL, largeImageURL,tags }) => ({
+            id,
+            webformatURL,
+            largeImageURL,
+            tags,
+          })
+        );
+        this.setState(prevState => ({
+          images:
+            prevState.page === 1
+              ? updatedImages
+              : [...prevState.images, ...updatedImages],
         }));
-        this.setState(({ images }) => ({ images: [...images, ...updatedImages] }));
-        document.addEventListener('keyup', e => {
-          if (e.key === 'Escape') {
-            this.closeModal();
-          };
-        });
       } catch (error) {
-        Notify.failure(`Error occurred ${error}`)
+        Notify.failure(`Error occurred ${error}`);
       } finally {
         this.setState({ isLoading: false });
       }
@@ -58,14 +72,18 @@ export class App extends Component {
 
   // mounting component
   componentDidMount() {
-    this.setState({ images: [], page: 1 });
+    document.addEventListener('keyup', e => {
+          if (e.key === 'Escape') {
+            this.closeModal(e);
+          }
+        });
   };
 
   // unmounting component + closing modal window on esc button
   componentWillUnmount() {
     document.removeEventListener('keyup', e => {
       if (e.key === 'Escape') {
-        this.closeModal();
+        this.closeModal(e);
       };
     });
   };
@@ -92,9 +110,11 @@ export class App extends Component {
   };
 
   // closing modal window func
-  closeModal = () => {
-  this.setState({ isModalOpen: false });
-  };
+  closeModal = (e) => {
+    if (e.target.tagName!=='IMG') {
+      this.setState({ isModalOpen: false });
+    }
+};
 
   render() {
     const { images, page, largeImage, isModalOpen, isLoading } = this.state;
