@@ -76,15 +76,15 @@ handleSubmit = e => {
     }
   }
 
-  // mounting component
-  componentDidMount() {
-    // document.addEventListener('keyup', this.pressEsc)
-  };
+  // // mounting component
+  // componentDidMount() {
+    
+  // };
 
-  // unmounting component + closing modal window on esc button
-  componentWillUnmount() {
-    // document.removeEventListener('keyup', this.pressEsc);
-  };
+  // // unmounting component + closing modal window on esc button
+  // componentWillUnmount() {
+   
+  // };
 
   // enlarging image on click func 
   handleEnlargeImage = id => {
