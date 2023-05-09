@@ -2,13 +2,17 @@ import propTypes from 'prop-types';
 import style from './Button.module.css';
 
 export const Button = ({ handleClick }) => {
-    return (
-        <button type='button' className={style.Button} onClick={() => handleClick()}>
-            Load more
-        </button>
-    );
+  return (
+    <button
+      type="button"
+      className={style.Button}
+      onClick={() => handleClick()}
+    >
+      Load more
+    </button>
+  );
 };
 
 Button.propTypes = {
-    handleClick: propTypes.func.isRequired
+  handleClick: propTypes.func.isRequired,
 };

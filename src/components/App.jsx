@@ -17,32 +17,30 @@ const INITIAL_STATE = {
   isLoading: false,
   isModalOpen: false,
   error: null,
-  inputVal:null,
+  inputVal: null,
 };
 
 export class App extends Component {
   state = { ...INITIAL_STATE };
 
   // submitting form func
-handleSubmit = e => {
-  e.preventDefault();
-  const form = e.currentTarget;
-  const input = form.elements.input.value;
+  handleSubmit = e => {
+    e.preventDefault();
+    const form = e.currentTarget;
+    const input = form.elements.input.value;
 
-  if (input.trim() === this.state.inputVal?.trim()) {
-    this.setState({ page: 1 });
-  } else {
-    this.setState({ images: [], search: input, page: 1, inputVal: input });
-  }
-
+    if (input.trim() === this.state.inputVal?.trim()) {
+      this.setState({ page: 1 });
+    } else {
+      this.setState({ images: [], search: input, page: 1, inputVal: input });
+    }
   };
-  
- pressEsc = e => {
-          if (e.key === 'Escape') {
-            this.closeModal(e);
-          }
-        };
 
+  pressEsc = e => {
+    if (e.key === 'Escape') {
+      this.closeModal(e);
+    }
+  };
 
   // updating component + fetch images from API
   async componentDidUpdate(prevProps, prevState) {
@@ -54,7 +52,7 @@ handleSubmit = e => {
       try {
         const fetch = await fetchImg(this.state.search, this.state.page, 12);
         const updatedImages = fetch.hits.map(
-          ({ id, webformatURL, largeImageURL,tags }) => ({
+          ({ id, webformatURL, largeImageURL, tags }) => ({
             id,
             webformatURL,
             largeImageURL,
@@ -75,7 +73,7 @@ handleSubmit = e => {
     }
   }
 
-  // enlarging image on click func 
+  // enlarging image on click func
   handleEnlargeImage = id => {
     const element = this.state.images.filter(image => {
       return image.id === id;
@@ -91,42 +89,39 @@ handleSubmit = e => {
     try {
       this.setState(({ page }) => ({ page: page + 1 }));
     } catch (error) {
-      Notify.failure(`Error occurred ${error}`)
+      Notify.failure(`Error occurred ${error}`);
     } finally {
       this.setState({ isLoading: false });
-    };
+    }
   };
 
   // closing modal window func
-  closeModal = (e) => {
+  closeModal = e => {
     if (e.target.tagName !== 'IMG') {
       document.removeEventListener('keyup', this.pressEsc);
       this.setState({ isModalOpen: false });
-
     }
-};
+  };
 
   render() {
     const { images, page, largeImage, isModalOpen, isLoading } = this.state;
     return (
       <div className={style.wrapper}>
         {isModalOpen ? (
-          <Modal clickImage={largeImage} handleClose={this.closeModal}  />
+          <Modal clickImage={largeImage} handleClose={this.closeModal} />
         ) : null}
         <Searchbar handleSubmit={this.handleSubmit} />
-        {isLoading && (page <= 1) ? <Loader /> : null}
+        {isLoading && page <= 1 ? <Loader /> : null}
         <ImageGallery>
-          <ImageGalleryItem 
+          <ImageGalleryItem
             images={images}
             onClick={this.handleEnlargeImage}
             loading={isLoading}
           />
         </ImageGallery>
-        {isLoading && (page > 2) ? <Loader /> : null}
-        {images.length === 0 ? null : (
-          <Button handleClick={this.loadMore} />
-        )}
+        {isLoading && page > 2 ? <Loader /> : null}
+        {images.length === 0 ? null : <Button handleClick={this.loadMore} />}
       </div>
     );
-  };
-};
+  }
+}
