@@ -9,7 +9,6 @@ import { Searchbar } from './Searchbar/Searchbar.jsx';
 import { Notify } from 'notiflix';
 import style from './App.module.css';
 
-
 const INITIAL_STATE = {
   images: [],
   search: '',
@@ -28,7 +27,6 @@ export class App extends Component {
     e.preventDefault();
     const form = e.currentTarget;
     const input = form.elements.input.value;
-     console.log(input);
     this.setState({ images: [], search: input, page: 1 });
     form.reset();
   };
@@ -39,7 +37,12 @@ export class App extends Component {
       this.setState({ isLoading: true });
       try {
         const fetch = await fetchImg(this.state.search, this.state.page, 12);
-        this.setState(({ images }) => ({ images: [...images, ...fetch.hits] }));
+        const updatedImages = fetch.hits.map(({ id, webformatURL, largeImageURL }) => ({
+          id,
+          webformatURL,
+          largeImageURL,
+        }));
+        this.setState(({ images }) => ({ images: [...images, ...updatedImages] }));
         document.addEventListener('keyup', e => {
           if (e.key === 'Escape') {
             this.closeModal();
@@ -48,10 +51,10 @@ export class App extends Component {
       } catch (error) {
         Notify.failure(`Error occurred ${error}`)
       } finally {
-          this.setState({ isLoading: false });
-      };
-    };
-  };
+        this.setState({ isLoading: false });
+      }
+    }
+  }
 
   // mounting component
   componentDidMount() {
