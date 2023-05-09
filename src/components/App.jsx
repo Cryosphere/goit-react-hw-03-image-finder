@@ -36,7 +36,13 @@ handleSubmit = e => {
   }
 
   // form.reset();
-};
+  };
+  
+ pressEsc = e => {
+          if (e.key === 'Escape') {
+            this.closeModal(e);
+          }
+        };
 
 
   // updating component + fetch images from API
@@ -72,20 +78,12 @@ handleSubmit = e => {
 
   // mounting component
   componentDidMount() {
-    document.addEventListener('keyup', e => {
-          if (e.key === 'Escape') {
-            this.closeModal(e);
-          }
-        });
+    document.addEventListener('keyup', this.pressEsc)
   };
 
   // unmounting component + closing modal window on esc button
   componentWillUnmount() {
-    document.removeEventListener('keyup', e => {
-      if (e.key === 'Escape') {
-        this.closeModal(e);
-      };
-    });
+    // document.removeEventListener('keyup', this.pressEsc);
   };
 
   // enlarging image on click func 
@@ -111,8 +109,10 @@ handleSubmit = e => {
 
   // closing modal window func
   closeModal = (e) => {
-    if (e.target.tagName!=='IMG') {
+    if (e.target.tagName !== 'IMG') {
+      document.removeEventListener('keyup', this.pressEsc);
       this.setState({ isModalOpen: false });
+
     }
 };
 
@@ -121,7 +121,7 @@ handleSubmit = e => {
     return (
       <div className={style.wrapper}>
         {isModalOpen ? (
-          <Modal clickImage={largeImage} handleClose={this.closeModal} />
+          <Modal clickImage={largeImage} handleClose={this.closeModal} escPressed={this.pressEsc} />
         ) : null}
         <Searchbar handleSubmit={this.handleSubmit} />
         {isLoading && (page <= 1) ? <Loader /> : null}
