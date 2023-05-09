@@ -35,7 +35,6 @@ handleSubmit = e => {
     this.setState({ images: [], search: input, page: 1, inputVal: input });
   }
 
-  // form.reset();
   };
   
  pressEsc = e => {
@@ -75,16 +74,6 @@ handleSubmit = e => {
       }
     }
   }
-
-  // // mounting component
-  // componentDidMount() {
-    
-  // };
-
-  // // unmounting component + closing modal window on esc button
-  // componentWillUnmount() {
-   
-  // };
 
   // enlarging image on click func 
   handleEnlargeImage = id => {
