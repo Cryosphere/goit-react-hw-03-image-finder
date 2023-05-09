@@ -1,9 +1,9 @@
 import PropTypes from 'prop-types';
 import style from './Modal.module.css';
 
-export const Modal = ({ clickImage, handleClose, escPressed }) => {
+export const Modal = ({ clickImage, handleClose}) => {
     return (
-        <div onClick={(e) => handleClose(e)} className={style.Overlay} onKeyDown={(e)=>escPressed(e)}>
+        <div onClick={(e) => handleClose(e)} className={style.Overlay}>
             <div className={style.Modal}>
                 <img src={clickImage.largeImageURL} alt={clickImage.tags} />
             </div>
@@ -17,5 +17,6 @@ Modal.propTypes = {
     tags: PropTypes.string.isRequired,
   }),
     
-    handleClose: PropTypes.func.isRequired
+    handleClose: PropTypes.func.isRequired,
+   
 };

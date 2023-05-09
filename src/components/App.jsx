@@ -78,7 +78,7 @@ handleSubmit = e => {
 
   // mounting component
   componentDidMount() {
-    document.addEventListener('keyup', this.pressEsc)
+    // document.addEventListener('keyup', this.pressEsc)
   };
 
   // unmounting component + closing modal window on esc button
@@ -93,6 +93,7 @@ handleSubmit = e => {
     });
     const click = element[0];
     this.setState({ isModalOpen: true, largeImage: click });
+    document.addEventListener('keyup', this.pressEsc);
   };
 
   // load more button func
@@ -121,7 +122,7 @@ handleSubmit = e => {
     return (
       <div className={style.wrapper}>
         {isModalOpen ? (
-          <Modal clickImage={largeImage} handleClose={this.closeModal} escPressed={this.pressEsc} />
+          <Modal clickImage={largeImage} handleClose={this.closeModal}  />
         ) : null}
         <Searchbar handleSubmit={this.handleSubmit} />
         {isLoading && (page <= 1) ? <Loader /> : null}
