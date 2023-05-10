@@ -4,7 +4,7 @@ import { Button } from './Button/Button.jsx';
 import { ImageGallery } from './ImageGallery/ImageGallery.jsx';
 import { ImageGalleryItem } from './ImageGalleryItem/ImageGalleryItem.jsx';
 import { Loader } from './Loader/Loader.jsx';
-import { Modal } from './Modal/Modal.jsx';
+import Modal from './Modal/Modal.jsx';
 import { Searchbar } from './Searchbar/Searchbar.jsx';
 import { Notify } from 'notiflix';
 import style from './App.module.css';
@@ -36,11 +36,11 @@ export class App extends Component {
     }
   };
 
-  pressEsc = e => {
-    if (e.key === 'Escape') {
-      this.closeModal(e);
-    }
-  };
+  // pressEsc = e => {
+  //   if (e.key === 'Escape') {
+  //     this.closeModal(e);
+  //   }
+  // };
 
   // updating component + fetch images from API
   async componentDidUpdate(prevProps, prevState) {
@@ -80,7 +80,7 @@ export class App extends Component {
     });
     const click = element[0];
     this.setState({ isModalOpen: true, largeImage: click });
-    document.addEventListener('keyup', this.pressEsc);
+    // document.addEventListener('keyup', this.pressEsc);
   };
 
   // load more button func
@@ -98,7 +98,7 @@ export class App extends Component {
   // closing modal window func
   closeModal = e => {
     if (e.target.tagName !== 'IMG') {
-      document.removeEventListener('keyup', this.pressEsc);
+      // document.removeEventListener('keyup', this.pressEsc);
       this.setState({ isModalOpen: false });
     }
   };

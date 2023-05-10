@@ -1,15 +1,35 @@
 import PropTypes from 'prop-types';
 import style from './Modal.module.css';
+import { Component } from 'react';
 
-export const Modal = ({ clickImage, handleClose }) => {
-  return (
-    <div onClick={e => handleClose(e)} className={style.Overlay}>
-      <div className={style.Modal}>
-        <img src={clickImage.largeImageURL} alt={clickImage.tags} />
+export default class Modal extends Component {
+  pressEsc = e => {
+    if (e.key === 'Escape') {
+      this.props.handleClose(e);
+    }
+  };
+
+  componentDidMount() {
+    window.addEventListener('keyup', this.pressEsc);
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('keyup', this.pressEsc);
+  }
+
+  render() {
+    return (
+      <div onClick={e => this.props.handleClose(e)} className={style.Overlay}>
+        <div className={style.Modal}>
+          <img
+            src={this.props.clickImage.largeImageURL}
+            alt={this.props.clickImage.tags}
+          />
+        </div>
       </div>
-    </div>
-  );
-};
+    );
+  }
+}
 
 Modal.propTypes = {
   clickImage: PropTypes.shape({

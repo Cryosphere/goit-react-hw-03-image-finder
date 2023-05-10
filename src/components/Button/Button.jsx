@@ -1,4 +1,4 @@
-import propTypes from 'prop-types';
+import PropTypes from 'prop-types';
 import style from './Button.module.css';
 
 export const Button = ({ handleClick }) => {
@@ -14,5 +14,5 @@ export const Button = ({ handleClick }) => {
 };
 
 Button.propTypes = {
-  handleClick: propTypes.func.isRequired,
+  handleClick: PropTypes.func.isRequired,
 };
